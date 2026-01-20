@@ -1,0 +1,258 @@
+helio/
+├── README.md
+├── docker-compose.yml
+├── .env.example
+├── .github/
+│   └── workflows/
+│       ├── ci.yml
+│       └── cd.yml
+│
+├── packages/                          # Shared libraries
+│   ├── common/
+│   │   ├── src/
+│   │   │   ├── types/                # Shared TypeScript types
+│   │   │   ├── utils/                # Helper functions
+│   │   │   ├── constants/
+│   │   │   └── validators/
+│   │   └── package.json
+│   │
+│   ├── ai-core/                      # Core AI orchestration library
+│   │   ├── src/
+│   │   │   ├── context/              # Unified context engine
+│   │   │   ├── reasoning/            # Insight & reasoning engine
+│   │   │   ├── nlp/                  # NLP utilities
+│   │   │   ├── learning/             # User preference learning
+│   │   │   └── orchestrator.ts
+│   │   └── package.json
+│   │
+│   └── workflow-engine/              # Core workflow execution engine
+│       ├── src/
+│       │   ├── engine/               # Workflow runner
+│       │   ├── nodes/                # Base node types
+│       │   ├── state/                # State management
+│       │   ├── retry/                # Retry & auto-healing logic
+│       │   └── scheduler/
+│       └── package.json
+│
+├── services/                          # Microservices
+│   ├── api-gateway/
+│   │   ├── src/
+│   │   │   ├── routes/
+│   │   │   ├── middleware/
+│   │   │   ├── auth/
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── intelligence-service/         # Module 0: AI Orchestrator
+│   │   ├── src/
+│   │   │   ├── controllers/
+│   │   │   ├── services/
+│   │   │   │   ├── context-manager.ts
+│   │   │   │   ├── suggestion-engine.ts
+│   │   │   │   ├── command-parser.ts
+│   │   │   │   └── insight-generator.ts
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── email-service/                # Module 1
+│   │   ├── src/
+│   │   │   ├── connectors/
+│   │   │   │   ├── gmail.ts
+│   │   │   │   └── outlook.ts
+│   │   │   ├── analyzers/
+│   │   │   │   ├── sender-analyzer.ts
+│   │   │   │   ├── intent-classifier.ts
+│   │   │   │   └── importance-scorer.ts
+│   │   │   ├── processors/
+│   │   │   │   ├── summarizer.ts
+│   │   │   │   └── attachment-handler.ts
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── hr-service/                   # Module 2
+│   │   ├── src/
+│   │   │   ├── onboarding/
+│   │   │   │   ├── document-validator.ts
+│   │   │   │   ├── data-extractor.ts
+│   │   │   │   └── asset-provisioner.ts
+│   │   │   ├── payroll/              # Module 7
+│   │   │   │   ├── calculator.ts
+│   │   │   │   ├── payslip-generator.ts
+│   │   │   │   └── anomaly-detector.ts
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── finance-service/              # Module 3
+│   │   ├── src/
+│   │   │   ├── invoice/
+│   │   │   │   ├── ocr-processor.ts
+│   │   │   │   ├── vendor-validator.ts
+│   │   │   │   ├── policy-checker.ts
+│   │   │   │   └── duplicate-detector.ts
+│   │   │   ├── budget/
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── vendor-service/               # Module 4
+│   │   ├── src/
+│   │   │   ├── portal/
+│   │   │   ├── compliance/
+│   │   │   ├── approval/
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── meeting-service/              # Module 5
+│   │   ├── src/
+│   │   │   ├── calendar/
+│   │   │   │   ├── google-calendar.ts
+│   │   │   │   └── outlook-calendar.ts
+│   │   │   ├── scheduler/
+│   │   │   │   ├── nlp-parser.ts
+│   │   │   │   ├── availability-checker.ts
+│   │   │   │   └── auto-booker.ts
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── document-service/             # Module 6
+│   │   ├── src/
+│   │   │   ├── upload/
+│   │   │   ├── ocr/
+│   │   │   ├── embedding/
+│   │   │   │   ├── chunker.ts
+│   │   │   │   └── embedder.ts
+│   │   │   ├── rag/
+│   │   │   │   ├── retriever.ts
+│   │   │   │   └── answer-generator.ts
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── inventory-service/            # Module 8
+│   │   ├── src/
+│   │   │   ├── tracking/
+│   │   │   ├── alerts/
+│   │   │   ├── reorder/
+│   │   │   ├── analytics/
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   ├── notification-service/
+│   │   ├── src/
+│   │   │   ├── email/
+│   │   │   ├── slack/
+│   │   │   ├── sms/
+│   │   │   └── index.ts
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   └── workflow-executor/
+│       ├── src/
+│       │   ├── executor.ts
+│       │   ├── nodes/                # Workflow node implementations
+│       │   │   ├── ai-node.ts
+│       │   │   ├── calendar-node.ts
+│       │   │   ├── email-node.ts
+│       │   │   ├── webhook-node.ts
+│       │   │   └── condition-node.ts
+│       │   └── index.ts
+│       ├── Dockerfile
+│       └── package.json
+│
+├── apps/                              # Frontend applications
+│   ├── web-dashboard/
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   │   ├── WorkflowBuilder/  # Drag & drop builder
+│   │   │   │   ├── CommandCenter/    # Natural language interface
+│   │   │   │   ├── AuditLog/
+│   │   │   │   └── Dashboard/
+│   │   │   ├── pages/
+│   │   │   ├── hooks/
+│   │   │   ├── services/
+│   │   │   └── App.tsx
+│   │   ├── public/
+│   │   ├── Dockerfile
+│   │   └── package.json
+│   │
+│   └── vendor-portal/
+│       ├── src/
+│       │   ├── components/
+│       │   ├── pages/
+│       │   └── App.tsx
+│       └── package.json
+│
+├── infrastructure/
+│   ├── terraform/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── modules/
+│   │
+│   ├── kubernetes/
+│   │   ├── base/
+│   │   │   ├── namespace.yaml
+│   │   │   ├── configmap.yaml
+│   │   │   └── secrets.yaml
+│   │   ├── services/
+│   │   │   ├── api-gateway.yaml
+│   │   │   ├── intelligence-service.yaml
+│   │   │   └── ...
+│   │   └── ingress/
+│   │
+│   └── scripts/
+│       ├── setup.sh
+│       ├── migrate.sh
+│       └── seed.sh
+│
+├── database/
+│   ├── migrations/
+│   │   ├── 001_initial_schema.sql
+│   │   ├── 002_add_workflows.sql
+│   │   └── ...
+│   ├── seeds/
+│   └── schemas/
+│       ├── employees.sql
+│       ├── invoices.sql
+│       ├── vendors.sql
+│       ├── workflows.sql
+│       └── audit_logs.sql
+│
+├── ai-models/                         # AI model configs & prompts
+│   ├── prompts/
+│   │   ├── email-summarizer.txt
+│   │   ├── intent-classifier.txt
+│   │   ├── meeting-parser.txt
+│   │   └── document-qa.txt
+│   ├── fine-tuned/                   # Custom model weights
+│   └── configs/
+│
+├── docs/
+│   ├── architecture/
+│   │   ├── system-design.md
+│   │   ├── data-flow.md
+│   │   └── security.md
+│   ├── api/
+│   │   └── openapi.yaml
+│   ├── workflows/
+│   │   ├── email-automation.md
+│   │   ├── invoice-processing.md
+│   │   └── meeting-scheduling.md
+│   └── deployment/
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   ├── e2e/
+│   └── load/
+│
+└── scripts/
+    ├── dev-setup.sh
+    ├── build-all.sh
+    └── deploy.sh

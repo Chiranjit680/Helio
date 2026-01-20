@@ -1,0 +1,67 @@
+# Core web framework
+fastapi
+uvicorn[standard]
+
+# Agentic + LLM orchestration
+langchain
+langgraph
+autogen-agentchat
+openai
+transformers
+huggingface_hub
+
+tiktoken
+
+# nlp basics
+nltk
+spacy
+
+# knowledge graph
+
+neo4j
+
+# Embedding / vector db
+faiss-cpu
+chromadb
+
+# Task queues / background jobs
+celery
+redis
+
+# Database + ORM
+sqlalchemy
+alembic
+psycopg2-binary
+
+# Authentication / security
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt
+
+# Async HTTP clients
+httpx
+aiohttp
+
+# Data handling + utilities
+pydantic
+pydantic-settings
+python-dotenv
+requests
+
+# File parsing + document loaders
+pypdf
+python-docx
+openpyxl
+
+# Observability + logging
+structlog
+loguru
+
+# Optional: ML + embeddings
+sentence-transformers
+
+# Optional: scheduling
+apscheduler
+
+# Optional: evaluation + metrics
+jsonlines
