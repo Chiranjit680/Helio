@@ -1,4 +1,20 @@
 # Core web framework
+
+google-auth==2.27.0
+google-auth-oauthlib==1.2.0
+google-auth-httplib2==0.2.0
+google-api-python-client==2.116.0
+msal==1.26.0
+requests==2.31.0
+google-generativeai
+python-dotenv==1.0.0
+
+# For additional features (optional)
+redis==5.0.1  # For caching and message queuing
+celery==5.3.4  # For background task processing
+sqlalchemy==2.0.25  # For database storage
+pydantic==2.5.3  # For data validation
+
 fastapi
 uvicorn[standard]
 
@@ -65,3 +81,4 @@ apscheduler
 
 # Optional: evaluation + metrics
 jsonlines
+
