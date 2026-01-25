@@ -51,6 +51,20 @@ coverage.xml
 .pytest_cache/
 cover/
 
+
+# ===============================
+# 🔐 Secrets & Credentials (CRITICAL)
+# ===============================
+credentials.json
+token.json
+storage/credentials.json
+storage/token.json
+storage/*.json
+*.secret
+.env
+.env.*
+.envrc
+
 # Translations
 *.mo
 *.pot
