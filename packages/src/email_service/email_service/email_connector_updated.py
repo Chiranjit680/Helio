@@ -20,7 +20,7 @@ from googleapiclient.errors import HttpError
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-BASE_DIR = Path(__file__).resolve().parents[3]
+BASE_DIR = Path(__file__).resolve().parents[4]
 class EmailConfig:
     """Configuration for Gmail API"""
     GMAIL_SCOPES = [
@@ -428,7 +428,7 @@ def main():
     # Use environment variables or update these paths
     
     
-    BASE_DIR = Path(__file__).resolve().parents[3]
+    BASE_DIR = Path(__file__).resolve().parents[4]
     credentials_path = Path(
     os.getenv("GMAIL_CREDENTIALS_PATH", BASE_DIR / "storage" / "credentials.json")
 ).resolve()
@@ -446,7 +446,7 @@ def main():
             credentials_path=credentials_path,
             token_path=token_path
         )
-        
+        connector.connect()
         # Get unread emails
         print("\n=== Fetching Unread Emails ===")
         new_emails = connector.get_new_emails(max_results=5)
