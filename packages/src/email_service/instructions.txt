@@ -1,0 +1,2 @@
+to run :
+uvicorn email_service.main:app --reload

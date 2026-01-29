@@ -44,6 +44,8 @@ class EmailConnector:
         self.credentials_path = credentials_path
         self.token_path = token_path
         self.service = None
+    def connect(self):
+        """Establish connection to Gmail API"""
         self._authenticate_gmail()
 
     def _authenticate_gmail(self):
@@ -428,7 +430,7 @@ def main():
     
     BASE_DIR = Path(__file__).resolve().parents[3]
     credentials_path = Path(
-    os.getenv("GMAIL_CREDENTIALS_PATH", BASE_DIR / "credentials.json")
+    os.getenv("GMAIL_CREDENTIALS_PATH", BASE_DIR / "storage" / "credentials.json")
 ).resolve()
 
     token_path = Path(
