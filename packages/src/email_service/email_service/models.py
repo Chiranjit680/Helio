@@ -1,15 +1,25 @@
-from pydantic import BaseModel, Field, EmailStr
-from typing import List, Optional, Dict, Any
-from datetime import datetime
-class EmailResponseModel(BaseModel):
-    id: str = Field(..., description="Unique identifier for the email")
-    from_: EmailStr = Field(..., alias='from', description="Email address of the sender")
-    to: str = Field(..., description="Recipient email address")
-    subject: str = Field(..., description="Subject of the email")
-    body: str = Field(..., description="Body content of the email")
-    date: str = Field(..., description="Date when the email was sent")
-    has_attachments: bool = Field(..., description="Flag indicating if email has attachments")
-    labels: List[str] = Field(default_factory=list, description="Gmail labels")
-    
-    class Config:
-        populate_by_name = True  # Allows using 'from' as alias
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean
+from sqlalchemy.sql import func
+
+from email_service.database import Base
+
+class EmailRecord(Base):
+    __tablename__ = "emails"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    message_id = Column(String, unique=True, index=True, nullable=False)
+
+    from_email = Column(String, index=True)
+    to_email = Column(String, index=True)
+
+    subject = Column(String, index=True)
+    body = Column(Text)
+
+    date_sent = Column(DateTime, index=True)
+    labels = Column(String)  # Comma-separated labels
+    iu_score = Column(Integer, default=0)  # Importance/Urgency score
+    has_attachments = Column(Boolean, default=False)
+    is_read = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    intention = Column(String, index=True)  # e.g., 'Work', 'Personal', etc.

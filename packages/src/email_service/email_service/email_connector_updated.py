@@ -89,7 +89,7 @@ class EmailConnector:
         self.service = build('gmail', 'v1', credentials=creds)
         logger.info("Gmail authentication successful")
 
-    def get_new_emails(self, query: str = 'is:unread', max_results: int = 10) -> List[Dict]:
+    def get_new_emails(self, query: str = 'is:unread', max_results: int = 5) -> List[Dict]:
         """
         Retrieve new/unread emails
         

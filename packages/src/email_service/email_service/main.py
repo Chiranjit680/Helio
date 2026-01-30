@@ -24,6 +24,15 @@ load_dotenv(dotenv_path=BASE_DIR / ".env")
 @app.on_event("startup")
 async def startup_event():
     print("Email Service is starting up...")
+
+    # Initialize DB tables if they don't exist
+    try:
+        from email_service.database import init_db
+        init_db()
+        print("Database tables ensured.")
+    except Exception as e:
+        print(f"Database initialization failed: {e}")
+
     credentials_path = os.getenv("GMAIL_CREDENTIALS_PATH", BASE_DIR / "credentials.json")
     token_path = os.getenv("GMAIL_TOKEN_PATH", BASE_DIR / "storage" /
                             "token.json")
