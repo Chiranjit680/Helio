@@ -22,4 +22,4 @@ class EmailRecord(Base):
     has_attachments = Column(Boolean, default=False)
     is_read = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    intention = Column(String, index=True)  # e.g., 'Work', 'Personal', etc.
+    intention = Column(String, index=True)  
