@@ -1,0 +1,291 @@
+# Helio - API Endpoints Quick Reference
+
+## 📋 Complete API Endpoints Summary
+
+### Base URL Structure
+```
+https://api.helio.app/api/v1/{service}/{resource}
+```
+
+---
+
+## 🧠 Intelligence Service (Port: 8000)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/intelligence/command` | Process natural language commands |
+| GET | `/intelligence/suggestions` | Get proactive AI suggestions |
+| POST | `/intelligence/automation/create` | Create cross-module automation |
+| GET | `/intelligence/insights` | Generate insights and anomalies |
+| POST | `/intelligence/heal` | Auto-heal failed workflows |
+| GET | `/intelligence/context` | Get unified context for entities |
+
+---
+
+## 📧 Email Service (Port: 8001)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/email/sync` | Sync emails from provider |
+| GET | `/email/inbox` | Get filtered inbox emails |
+| POST | `/email/analyze` | Analyze email content |
+| POST | `/email/draft` | Generate AI draft reply |
+| POST | `/email/send` | Send email |
+| POST | `/email/webhook` | Receive email push notifications |
+
+---
+
+## 👥 HR Service (Port: 8002)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/hr/onboarding/initiate` | Start employee onboarding |
+| POST | `/hr/onboarding/{id}/upload` | Upload employee documents |
+| POST | `/hr/onboarding/{id}/validate` | Validate uploaded documents |
+| POST | `/hr/onboarding/{id}/extract` | Extract data from documents |
+| POST | `/hr/onboarding/{id}/complete` | Complete onboarding process |
+| GET | `/hr/employees/{id}` | Get employee details |
+| GET | `/hr/employees/filter` | Filter employees by criteria |
+
+---
+
+## 💰 Finance Service (Port: 8003)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/finance/invoices/upload` | Upload invoice document |
+| GET | `/finance/invoices/{id}/extract` | Extract invoice data (OCR) |
+| POST | `/finance/invoices/{id}/verify-vendor` | Verify vendor details |
+| POST | `/finance/budget/check` | Check budget availability |
+| POST | `/finance/invoices/{id}/apply-policy` | Apply approval policy |
+| GET | `/finance/invoices/check-duplicate` | Check for duplicate invoices |
+| POST | `/finance/invoices/{id}/approve` | Approve invoice |
+| POST | `/finance/invoices/{id}/reject` | Reject invoice |
+| GET | `/finance/invoices/{id}` | Get invoice details |
+| GET | `/finance/invoices` | List invoices with filters |
+
+---
+
+## 🏢 Vendor Service (Port: 8004)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/vendors/onboarding/initiate` | Create vendor onboarding link |
+| POST | `/vendors/onboarding/{id}/upload` | Upload vendor documents |
+| POST | `/vendors/onboarding/{id}/validate` | Validate compliance |
+| POST | `/vendors/onboarding/{id}/complete` | Complete vendor onboarding |
+| GET | `/vendors/{id}` | Get vendor details |
+| GET | `/vendors/verify` | Verify vendor by name/tax ID |
+| GET | `/vendors` | List all vendors |
+
+---
+
+## 📅 Meeting Service (Port: 8005)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/meetings/schedule/natural` | Schedule meeting via natural language |
+| GET | `/meetings/availability` | Check calendar availability |
+| POST | `/meetings/create` | Create meeting |
+| PUT | `/meetings/{id}` | Update meeting |
+| DELETE | `/meetings/{id}` | Cancel meeting |
+| GET | `/meetings` | Get user's meetings |
+
+---
+
+## 📄 Document Service (Port: 8006)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/documents/upload` | Upload document |
+| GET | `/documents/{id}/process-status` | Check processing status |
+| POST | `/documents/search` | Semantic search (RAG) |
+| GET | `/documents/{id}` | Get document details |
+| GET | `/documents` | List documents |
+| DELETE | `/documents/{id}` | Delete document |
+
+---
+
+## 💵 Payroll Service (Port: 8007)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/payroll/calculate` | Calculate employee payroll |
+| POST | `/payroll/{id}/generate-payslip` | Generate payslip PDF |
+| POST | `/payroll/{id}/send` | Send payslip to employee |
+| POST | `/payroll/detect-anomalies` | Detect payroll anomalies |
+| POST | `/payroll/batch/approve` | Approve batch payroll |
+| GET | `/payroll/employee/{id}/history` | Get payroll history |
+
+---
+
+## 📦 Inventory Service (Port: 8008)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/inventory/items` | Add new inventory item |
+| PATCH | `/inventory/items/{id}/stock` | Update stock quantity |
+| GET | `/inventory/alerts/low-stock` | Get low stock alerts |
+| POST | `/inventory/purchase-orders/generate` | Generate purchase order |
+| GET | `/inventory/analytics` | Get usage analytics |
+| GET | `/inventory/items/{id}` | Get item details |
+| GET | `/inventory/items` | List inventory items |
+
+---
+
+## ⚙️ Workflow Service (Port: 8009)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/workflows` | Create workflow definition |
+| POST | `/workflows/{id}/execute` | Execute workflow |
+| GET | `/workflows/executions/{id}` | Get execution status |
+| POST | `/workflows/executions/{id}/retry` | Retry failed execution |
+| GET | `/workflows` | List workflows |
+
+---
+
+## 👤 User Service (Port: 8010)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/users/{id}` | Get user profile |
+| PATCH | `/users/{id}/preferences` | Update user preferences |
+
+---
+
+## 🔐 Auth Service (Port: 8011)
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/auth/register` | Register new user |
+| POST | `/auth/login` | User login |
+| POST | `/auth/refresh` | Refresh access token |
+| POST | `/auth/logout` | User logout |
+| POST | `/auth/check-permission` | Check user permissions |
+
+---
+
+## 🔄 Message Queue Topics
+
+### Email Events
+- `email.received`
+- `email.analyzed`
+
+### HR Events
+- `employee.onboarding.started`
+- `employee.onboarding.completed`
+- `employee.document.uploaded`
+
+### Finance Events
+- `invoice.uploaded`
+- `invoice.approved`
+- `invoice.rejected`
+- `budget.exceeded`
+
+### Vendor Events
+- `vendor.onboarding.completed`
+- `vendor.verified`
+
+### Meeting Events
+- `meeting.scheduled`
+- `meeting.cancelled`
+
+### Document Events
+- `document.uploaded`
+- `document.processed`
+
+### Workflow Events
+- `workflow.execution.started`
+- `workflow.execution.completed`
+- `workflow.execution.failed`
+
+---
+
+## 📊 Common Query Parameters
+
+### Pagination
+```
+?page=1&limit=20
+```
+
+### Filtering
+```
+?status=active&category=contract&tags=vendor
+```
+
+### Date Ranges
+```
+?start_date=2026-01-01&end_date=2026-01-31
+```
+
+### Sorting
+```
+?sort_by=created_at&order=desc
+```
+
+---
+
+## 🔒 Authentication
+
+All API requests require JWT authentication:
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+---
+
+## 📈 Rate Limits
+
+| Service | Rate Limit | Window |
+|---------|-----------|--------|
+| Intelligence Service | 100 req/min | per user |
+| Email Service | 200 req/min | per user |
+| Document Service | 50 req/min | per user |
+| All Other Services | 200 req/min | per user |
+
+---
+
+## 🌐 Service Discovery
+
+Services are discoverable via:
+- **Kubernetes DNS**: `service-name.namespace.svc.cluster.local`
+- **Service Mesh**: Istio for traffic management
+- **API Gateway**: Kong at `https://api.helio.app`
+
+---
+
+## 📝 API Versioning
+
+Current version: **v1**
+
+All endpoints follow the pattern:
+```
+/api/v1/{service}/{resource}
+```
+
+Future versions will be accessible at:
+```
+/api/v2/{service}/{resource}
+```
+
+---
+
+## 🔧 Health Checks
+
+Each service exposes health check endpoints:
+
+```
+GET /{service}/health
+Response: {"status": "healthy", "timestamp": "..."}
+```
+
+```
+GET /{service}/metrics
+Response: Prometheus-formatted metrics
+```
+
+---
+
+This quick reference provides a comprehensive overview of all API endpoints in the Helio system.
