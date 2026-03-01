@@ -34,6 +34,12 @@ Derived from handwritten note: "Email Read Watcher -> Analyzer -> Summarizing"
 
 **FR-EMAIL-06 (Attachment Processing):** The system shall automatically detach files (PDFs/Images) and send them to the Document Processor.
 
+**FR-EMAIL-07(Natural Language Email Generation):**
+
+**FR-EMAIL-08(Context aware email summary generation):**
+
+
+
 ---
 
 ## Module 2: Employee Onboarding

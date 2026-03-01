@@ -35,7 +35,7 @@ async def startup_event():
         scheduler.add_job(
             func=sync_emails,
             trigger="interval",
-            minutes=5,
+            minutes=1,
             id="email_sync_job",
             replace_existing=True)
         scheduler.start()

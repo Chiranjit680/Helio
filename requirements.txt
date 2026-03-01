@@ -24,6 +24,8 @@ langgraph
 autogen-agentchat
 openai
 transformers
+torch  # Required for BART models
+sentencepiece  # Required for tokenization
 huggingface_hub
 
 tiktoken

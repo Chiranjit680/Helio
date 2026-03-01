@@ -228,3 +228,16 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# ===============================
+# ML Models & Weights
+# ===============================
+# Hugging Face model cache (large files, downloaded as needed)
+**/models/huggingface_cache/
+*.bin
+*.safetensors
+*.onnx
+*.pt
+*.pth
+*.h5
+*.pb

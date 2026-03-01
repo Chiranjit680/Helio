@@ -1,0 +1,1 @@
+{"name":"Local: email_classifier","url":"d:\\Helio\\Helio\\packages\\src\\email_service\\email_service\\email_classifier.py","tests":[{"id":1772336176600,"input":"","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Helio\\Helio\\packages\\src\\email_service\\email_service\\email_classifier.py","group":"local","local":true}

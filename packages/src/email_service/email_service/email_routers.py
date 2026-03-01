@@ -6,7 +6,7 @@ import logging
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from email_service.email_classifier import email_agent
+from email_service.email_classifier import email_model_results
 from email_service.schema import EmailResponseModel, SyncResponse
 from email_service.models import EmailRecord
 from email_service.email_connector_updated import EmailConnector
@@ -81,12 +81,13 @@ async def sync_emails(
 
             # AI classification (fail-safe)
             try:
-                agent_response = email_agent(
+                agent_response = email_model_results(
                     email_content=msg["body"],
                     sender_info=msg["from"],
                 )
-                ai_out = agent_response.dict() if hasattr(agent_response, "dict") else {}
-            except Exception:
+                ai_out = agent_response if isinstance(agent_response, dict) else {}
+            except Exception as e:
+                logger.warning(f"AI classification failed for {message_id}: {e}")
                 ai_out = {}
 
             record = EmailRecord(

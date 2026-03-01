@@ -3,7 +3,7 @@ from email.utils import parsedate_to_datetime
 
 from email_service.email_connector_updated import EmailConnector
 import logging
-from email_service.email_classifier import email_agent
+from email_service.email_classifier import email_model_results
 from email_service.database import get_db
 import os
 from dotenv import load_dotenv
@@ -44,12 +44,13 @@ def sync_emails():
                 skipped += 1
                 continue
             try:
-                agent_response = email_agent(
+                ai_response = email_model_results(
                     email_content=msg["body"],
-                    sender_info=msg["from"],
+                    sender_info=msg.get("from", "")
                 )
-                ai_out = agent_response.dict() if hasattr(agent_response, "dict") else {}
-            except Exception:
+                ai_out = ai_response if isinstance(ai_response, dict) else {}
+            except Exception as e:
+                logger.warning(f"AI classification failed for message {message_id}: {e}")
                 ai_out = {}
             raw_date = msg.get("date", None)
             if raw_date:
