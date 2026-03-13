@@ -19,3 +19,5 @@ class SyncResponse(BaseModel):
     fetched: int
     inserted: int
     skipped: int
+class QueryModel(BaseModel):
+    query: str = Field(..., description="The search query for the email knowledge base")

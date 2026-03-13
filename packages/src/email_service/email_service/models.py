@@ -21,5 +21,6 @@ class EmailRecord(Base):
     iu_score = Column(Integer, default=0)  # Importance/Urgency score
     has_attachments = Column(Boolean, default=False)
     is_read = Column(Boolean, default=False)
+    in_knowledge_base = Column(Boolean, default=False)  # Whether this email is in ChromaDB
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     intention = Column(String, index=True)  

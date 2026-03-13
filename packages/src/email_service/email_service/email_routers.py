@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 from email_service.email_classifier import email_model_results
-from email_service.schema import EmailResponseModel, SyncResponse
+from email_service.schema import EmailResponseModel, SyncResponse, QueryModel
 from email_service.models import EmailRecord
 from email_service.email_connector_updated import EmailConnector
 from email_service.database import get_db
@@ -220,4 +220,31 @@ async def admin_init_db():
         return {"status": "ok", "detail": "DB tables created or already exist"}
     except Exception as e:
         logger.exception("DB init failed")
+        raise HTTPException(status_code=500, detail=str(e))
+@router.get("/admin/sync-chroma", status_code=status.HTTP_200_OK)
+async def admin_sync_chroma():
+    """Admin endpoint to sync Postgres data to ChromaDB."""
+    try:
+        from email_service.email_knowledge_base import sync_postgres_to_chroma
+        sync_postgres_to_chroma()
+        return {"status": "ok", "detail": "ChromaDB sync completed"}
+    except Exception as e:
+        logger.exception("ChromaDB sync failed")
+        raise HTTPException(status_code=500, detail=str(e))
+@router.get("/query", status_code=status.HTTP_200_OK)
+def nlp_search_email( query: QueryModel):
+    """Endpoint to query emails using NLP search."""
+    try:
+        from email_service.email_knowledge_base import collection
+        results = collection.query(
+            query_texts=[query.query],
+            n_results=5,
+            include=["documents", "metadatas"]
+        )
+        # result_string= "\n\n".join(results["documents"][0])
+        return {
+            "results": results["documents"][0]
+        }
+    except Exception as e:
+        logger.exception("NLP search failed")
         raise HTTPException(status_code=500, detail=str(e))
