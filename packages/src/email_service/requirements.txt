@@ -1,0 +1,17 @@
+fastapi 
+uvicorn[standard]
+transformers>=4.30.0
+torch>=2.0.0
+sentencepiece>=0.1.99
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+sqlalchemy>=2.0.0
+psycopg2-binary
+apscheduler>=3.10.0
+chromadb
+google-auth>=2.27.0
+google-auth-oauthlib>=1.2.0
+google-auth-httplib2>=0.2.0
+google-api-python-client>=2.116.0
+requests>=2.31.0
+
