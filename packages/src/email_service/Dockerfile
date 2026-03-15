@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install --upgrade pip
 
 # Copy dependency files first (better caching)
-COPY /requirements.txt ./requirements.txt
-COPY /pyproject.toml .
+COPY requirements.txt ./requirements.txt
+COPY pyproject.toml .
 
 # Install dependencies into isolated directory
 RUN pip install \

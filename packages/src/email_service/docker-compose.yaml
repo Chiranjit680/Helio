@@ -1,0 +1,66 @@
+services:
+  email_service:
+    container_name: helio-email-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: helio/email-service:latest
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      DATABASE_URL: postgresql://postgres:unlockit@postgres:5432/Helio
+      GMAIL_CREDENTIALS_PATH: /app/storage/credentials.json
+      GMAIL_TOKEN_PATH: /app/storage/token.json
+      HF_HOME: /app/email_service/models/huggingface_cache
+      PYTHONUNBUFFERED: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./storage:/app/storage
+      - chroma_data:/app/email_service/my_chroma_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8001/', timeout=5)"
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 45s
+    networks:
+      - helio-network
+
+  postgres:
+    container_name: helio-postgres
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: Helio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: unlockit
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d Helio"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - helio-network
+
+networks:
+  helio-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  chroma_data:
