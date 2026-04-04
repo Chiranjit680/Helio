@@ -1,18 +1,21 @@
 # Slack Service
 
-This service receives Slack events, stores message events in Postgres, and can send messages back to Slack.
+This service receives Slack events, stores message events in Postgres with ML embeddings, and acts as a central intelligence layer for Slack operations.
 
 ## What it does
 
 - Exposes Slack-facing and internal HTTP endpoints under `/api/slack`
 - Verifies Slack request signatures on the events endpoint
-- Stores incoming Slack message events in the `slack_messages` table
+- Employs local ML models (`Xenova/transformers` with `MiniLM-L6-v2`) to embed messages
+- Stores incoming Slack message events in the `slack_messages` table via PostgreSQL and `pgvector`
+- Enables blazing-fast semantic search using HNSW indexes
+- Provides intelligent broadcasting: routing messages to the most relevant Slack channels based on intent
 - Sends outbound messages with the Slack Web API
 
 ## Prerequisites
 
 - Node.js 18+
-- PostgreSQL
+- PostgreSQL 12+ with the `pgvector` extension installed 
 - A Slack app with:
   - a bot token for `SLACK_BOT_TOKEN`
   - a signing secret for `SLACK_SIGNING_SECRET`
@@ -59,10 +62,15 @@ The service starts on `http://localhost:8002` unless `PORT` is overridden.
 
 ## Available Endpoints
 
-- `GET /api/slack/health`
-- `GET /api/slack/messages`
-- `POST /api/slack/send`
-- `POST /api/slack/events`
+- `GET /api/slack/health` - Basic health check
+- `GET /api/slack/messages` - Retrieve all messages
+- `GET /api/slack/important` - Retrieve messages scored as important
+- `GET /api/slack/search?query=...` - Semantic search across all indexed messages
+- `GET /api/slack/stats` - Overall system and pgvector statistics
+- `POST /api/slack/send` - Send a basic Slack message
+- `POST /api/slack/events` - Ingest Slack events
+- `POST /api/slack/admin/bootstrap-channels` - Bootstrap embeddings for all workspace channels
+- `POST /api/slack/broadcast` - Smart broadcast based on channel semantic relevance
 
 ## How to Test
 
@@ -115,7 +123,35 @@ Expected response shape:
 
 If this fails, verify the bot token and that the bot has permission to post to the target channel.
 
-### 3. Test message retrieval from Postgres
+### 3. Test Smart Broadcast
+
+Bootstraps all channels with embeddings, then queries the most relevant channels for your announcement.
+
+PowerShell:
+
+```powershell
+# 1. Bootstrap channels first
+Invoke-RestMethod -Method Post http://localhost:8002/api/slack/admin/bootstrap-channels
+
+# 2. Test smart broadcast
+$body = @{
+  intent = "finance department invoice payments vendor budget approval"
+  messageBody = "Action required: All pending invoices above $50k must be reviewed before Friday."
+  topK = 3
+  threshold = 0.40
+} | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri http://localhost:8002/api/slack/broadcast -ContentType "application/json" -Body $body
+```
+
+### 4. Test Semantic Search
+
+PowerShell:
+
+```powershell
+Invoke-RestMethod -Method Get http://localhost:8002/api/slack/search?query=invoice%20approval
+```
+
+### 5. Test message retrieval from Postgres
 
 PowerShell:
 
@@ -133,7 +169,7 @@ Expected response shape:
 
 After Slack events are processed, this endpoint should return saved rows ordered by `created_at` descending.
 
-### 4. Test Slack event ingestion locally
+### 6. Test Slack event ingestion locally
 
 The `/api/slack/events` route requires Slack signature headers, so a plain POST without signing will be rejected.
 
@@ -181,9 +217,9 @@ Expected behavior:
 
 - The endpoint returns HTTP `200` immediately.
 - The message event is processed asynchronously.
-- A follow-up `GET /api/slack/messages` call should show the stored message.
+- A follow-up `GET /api/slack/search?query=test` call should pick it up seamlessly.
 
-### 5. Test Slack URL verification
+### 7. Test Slack URL verification
 
 Slack sends a `url_verification` payload when validating the events endpoint.
 
