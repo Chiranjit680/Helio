@@ -12,6 +12,7 @@ base_dir = Path(__file__).resolve().parent.parent.parent.parent
 load_dotenv(dotenv_path=base_dir / ".env")
 from contextlib import closing
 
+
 def sync_emails():
     connector = EmailConnector(
         credentials_path=os.getenv("GMAIL_CREDENTIALS_PATH", base_dir / "credentials.json"),
