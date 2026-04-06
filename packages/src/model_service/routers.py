@@ -1,6 +1,6 @@
 from http import client
 from typing import List, Optional
-from fastapi import APIRouter, Query, status
+from fastapi import APIRouter, HTTPException, Query, status
 from fastapi.concurrency import run_in_threadpool
 from google import genai
 
@@ -11,6 +11,8 @@ except ImportError:
     from schema import DocClassificationRequest, DocClassificationResponse, GeminiQuery
     from model_store import get_or_load_classifier
 from dotenv import load_dotenv
+from classify_payload import _classify_payload
+
 import os
 router = APIRouter(tags=["model_service"])
 
@@ -27,20 +29,10 @@ DEFAULT_LABELS = [
 ]
 
 
-# 🔵 Sync function (CPU-bound work)
 
-def _classify_payload(text: str, candidate_labels: List[str]=DEFAULT_LABELS) -> dict:
-    classifier = get_or_load_classifier("valhalla/distilbart-mnli-12-3")
 
-    result = classifier(
-        sequences=text,
-        candidate_labels=candidate_labels
-    )
 
-    return {
-        "label": result["labels"][0],
-        "score": result["scores"][0]
-    }
+
 
 
 # 🔵 Async route (non-blocking using threadpool)
@@ -67,7 +59,4 @@ async def gemini_interface(request: GeminiQuery):
     model="gemini-3-flash-preview",
     contents=request.text)
     return {"response": response.text}
-
-
-    
 

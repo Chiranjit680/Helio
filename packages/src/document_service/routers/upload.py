@@ -10,9 +10,9 @@ SRC_DIR = Path(__file__).resolve().parents[2]
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from model_service.routers import _classify_payload
+from model_service.classify_payload_semantic import _classify_payload_semantic
 from knowledge_base import DocumentProcessor
-
+from sync_knowledge_base import task, push_to_queue
 
 # =========================
 # Router
@@ -37,7 +37,7 @@ DEFAULT_LABELS = [
 ALLOWED_PDF_CONTENT_TYPES   = {"application/pdf"}
 ALLOWED_IMAGE_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
 
-update_queue = deque(maxlen=100)  # In-memory queue for updates (for demonstration)   
+ # In-memory queue for updates (for demonstration)   
 # =========================
 # Directory Layout
 # =========================
@@ -73,12 +73,15 @@ async def upload_pdf(file: UploadFile = File(...)):
     file_content = await file.read()
     if not file_content:
         raise HTTPException(status_code=400, detail="Uploaded PDF could not be read or is empty.")
-        text = None
-    else:
-        text = await run_in_threadpool(doc_processor.extract_text, file_content)
+    text = await run_in_threadpool(doc_processor.extract_text, file_content)
+    if not text:
+        raise HTTPException(
+            status_code=422,
+            detail="No extractable text was found in the uploaded PDF.",
+        )
 
     # 2. Classify
-    result     = await run_in_threadpool(_classify_payload, text, DEFAULT_LABELS)
+    result     = await run_in_threadpool(_classify_payload_semantic, text)
     label      = result["label"]
     confidence = result["score"]
 
@@ -88,7 +91,7 @@ async def upload_pdf(file: UploadFile = File(...)):
     with open(saved_path, "wb") as f:
         f.write(file_content)
     
-    update_queue.append([[file.filename, label, "pdf"]])  # Add to in-memory update queue
+    push_to_queue({"filename": file.filename, "label": label, "type": "pdf"})
     return {
         "message"    : "PDF uploaded and classified",
         "filename"   : file.filename,
@@ -108,7 +111,7 @@ async def upload_image(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Only image files are allowed")
 
     # 1. Classify by filename
-    result     = await run_in_threadpool(_classify_payload, file.filename, DEFAULT_LABELS)
+    result     = await run_in_threadpool(_classify_payload_semantic, file.filename)
     label      = result["label"]
     confidence = result["score"]
 
@@ -118,8 +121,9 @@ async def upload_image(file: UploadFile = File(...)):
 
     with open(saved_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
+    file_content = 
 
-    update_queue.append([[file.filename, label, "image"]])  # Add to in-memory update queue
+    push_to_queue({"filename": file.filename,  "label": label, "type": "image"})
 
     return {
         "message"   : "Image uploaded and classified",

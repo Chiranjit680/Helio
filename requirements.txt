@@ -94,5 +94,8 @@ jsonlines
 
 docling
 
+langchain-document-loaders
+langchain_huggingface
+langchain_experimental
 
 

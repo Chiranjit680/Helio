@@ -13,7 +13,7 @@ _classifier_cache: Dict[str, Any] = {}
 
 
 def get_or_load_classifier(model_id: str = "valhalla/distilbart-mnli-12-3"):
-    """Return a cached zero-shot classifier or load and cache it."""
+    """Return a cached zero-shot classifier, loading it on first call."""
     if model_id in _classifier_cache:
         return _classifier_cache[model_id]
 
@@ -25,7 +25,6 @@ def get_or_load_classifier(model_id: str = "valhalla/distilbart-mnli-12-3"):
     )
     _classifier_cache[model_id] = classifier
     return classifier
-
 
 def preload_bart_model(model_id: str = "valhalla/distilbart-mnli-12-3") -> bool:
     """Pre-download and cache model at startup."""
