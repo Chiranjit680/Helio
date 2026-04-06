@@ -234,6 +234,11 @@ pnpm-debug.log*
 # ===============================
 # Hugging Face model cache (large files, downloaded as needed)
 **/models/huggingface_cache/
+# Ignore all model files
+packages/src/model_service/models/
+
+# OR (more specific)
+packages/src/model_service/models/*
 *.bin
 *.safetensors
 *.onnx

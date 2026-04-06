@@ -23,16 +23,20 @@ def generate_chunks(file=None, text=None):
         raise ValueError("Either file or text must be provided")
 
     docs = text_splitter.split_text(text)
-    return docs
-
+    embeddings_list = embeddings.embed_documents(docs)
+    return docs, embeddings_list
 
 if __name__ == "__main__":
     start_time = time.time()
-    chunks = generate_chunks(file=r"D:\Helio\CV_ChiranjitSaha.pdf")
+    chunks, chunk_embeddings = generate_chunks(file=r"D:\Helio\2102.12122v2.pdf")
     end_time = time.time()
     print(f"Chunk generation took {end_time - start_time:.2f} seconds")
     print(f"Generated {len(chunks)} chunks:")
-    for i, chunk in enumerate(chunks):
-        print(f"Chunk length: {len(chunk)} characters")
+
+    # Fix 1: correct enumerate+zip unpacking
+    for i, (chunk, embedding) in enumerate(zip(chunks, chunk_embeddings)):
         print(f"Chunk {i+1}: {chunk[:100]}...")
-        
+        print(f"Chunk length: {len(chunk)} characters")
+        # Fix 2: embedding is a list, not a numpy array
+        print(f"Chunk {i+1} embedding dimensions: {len(embedding)}")
+        print(chunk)
